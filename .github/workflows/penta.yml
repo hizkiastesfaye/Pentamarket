@@ -1,0 +1,42 @@
+name: Nodejs-backend
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        
+    steps:
+      - name: check repository
+        uses: actions/checkout@v3
+      - name: setup nodejs
+        uses: actions/setup-nodejs@v3
+        with:
+          node-version: '20.x'
+      - name: run dependencies
+        run: npm install 
+      - name: waiting for mongodb ready
+        run: |
+            for i in `seq 1 30`; do
+              nc -z localhost 27017 && echo "MongoDB is ready" && exit 0
+              echo "Waiting for MongoDB to be ready..."
+              sleep 1
+            done
+            echo "MongoDB did not become ready in time" && exit 1
+
+      - name: Environment
+        run: echo "MONGO_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
+        # - name: run test
+        #   run: npm test
