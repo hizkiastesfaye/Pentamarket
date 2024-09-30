@@ -22,7 +22,7 @@ jobs:
       - name: check repository
         uses: actions/checkout@v3
       - name: setup nodejs
-        uses: actions/setup-nodejs@v3
+        uses: actions/setup-node@v3
         with:
           node-version: '20.x'
       - name: run dependencies
