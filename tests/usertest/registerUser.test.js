@@ -44,6 +44,13 @@ const user2 = {
     email:'john@gmail.com',
     password:'1234567899',
 }
+const userincorrectemail = {
+    firstname:'kandrik',
+    lastname:'mattiw',
+    tel:'0987654',
+    email:'kandrikgmail.com',
+    password:'1234567899',
+}
 const usernull=null;
 
 describe('Test User', ()=>{
@@ -81,28 +88,11 @@ describe('Test User', ()=>{
 
 })
 
-describe.only('Test the Errors',()=>{
+describe('Test the Errors',()=>{
 
-    const userincorrectemail = {
-        firstname:'kandrik',
-        lastname:'mattiw',
-        tel:'0987654',
-        email:'kandrikgmail.com',
-        password:'1234567899',
-    }
     it('test /user/register express validation',async()=>{
-        err = {
-            errors: [
-                {
-                location: "body",
-                msg: "tel is required",
-                path: "tel",
-                type: "field",
-                value: undefined,
-                },
-            ],
-        }
-         const res01 = await request(app)
+
+        const res01 = await request(app)
         .post('/user/register')
         .send(user)
         .expect(400)
