@@ -1,9 +1,7 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const mongoose = require('mongoose')
-const usermodel = require('../../src/features/Users/userModel')
-
-
+const userModel = require('../../src/features/Users/userModel')
 const connectDB = require('../../src/config/dbConfig')
 
 const user1firstname = 'mark'
@@ -26,7 +24,7 @@ beforeAll(async ()=>{
     await connectDB()
 })
 beforeEach(async()=>{
-    const res10 = await request(app)
+    await request(app)
     .post('/user/register')
     .send(user10)
 
@@ -37,7 +35,7 @@ beforeEach(async()=>{
     token = res.body.token
 })
 afterEach(async ()=>{
-    await usermodel.deleteMany()
+    await userModel.User.deleteMany()
 })
 
 

@@ -17,7 +17,7 @@ beforeAll(async ()=>{
     await connectDB()
 })
 afterEach(async ()=>{
-    await usermodel.deleteMany()
+    await usermodel.User.deleteMany()
 })
 afterAll(async ()=>{
     // await mongoose.disconnect()

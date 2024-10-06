@@ -19,3 +19,13 @@ exports.loginUser = async(req,res)=>{
         res.status(400).json({error:err.message})
     }
 }
+
+exports.updateUser = async (req,res)=>{
+    try{
+        const response = await userService.updateUser(req)
+        res.status(201).json(response)
+    }
+    catch(err){
+        res.status(400).json({error:err.message})
+    }
+}

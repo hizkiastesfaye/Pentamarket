@@ -79,30 +79,30 @@ const User = mongoose.model('User', userSchema)
 
 
 
-// const addressSchema = mongoose.Schema({
-//     user_id:{
-//         type:mongoose.Schema.Types.ObjectId,
-//         ref:'User',
-//         required:true
-//     },
-//     state:{
-//         type:String
-//     },
-//     city:{
-//         type:String
-//     },
-//     street:{
-//         type:String,
-//         trim:true
-//     },
-//     postcode:{
-//         type:String,
-//         trim:true
-//     }
+const addressSchema = mongoose.Schema({
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+    state:{
+        type:String,
+    },
+    city:{
+        type:String
+    },
+    street:{
+        type:String,
+        trim:true
+    },
+    postcode:{
+        type:String,
+        trim:true
+    }
     
-// })
+})
 
-// const Address = mongoose.model('Address',addressSchema)
+const Address = mongoose.model('Address',addressSchema)
 
 
-module.exports =User
+module.exports = { User, Address }

@@ -2,7 +2,7 @@ const express = require('express')
 require('dotenv').config()
 const router = express.Router()
 const controller = require('./userController')
-const { userRegisterValidate, userLoginvalidate }= require('../../middleware/validMiddleware')
+const validMiddleware= require('../../middleware/validMiddleware')
 const jwtt = require('jsonwebtoken')
 const authMiddleware = require('../../middleware/authMiddleware')
 
@@ -16,9 +16,9 @@ router.get('/protected',authMiddleware.jwtVerify,(req,res)=>{
 
 })
 
-router.post('/register',userRegisterValidate(),controller.registerUser)
-router.post('/login',userLoginvalidate(),controller.loginUser)
-
+router.post('/register',validMiddleware.userRegisterValidate(),controller.registerUser)
+router.post('/login',validMiddleware.userLoginvalidate(),controller.loginUser)
+router.post('/update/:field1/:field2?',authMiddleware.jwtVerify,validMiddleware.userUpdateValidate(),controller.updateUser)
 
 
 module.exports = router;
