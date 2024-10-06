@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "workflow": "jest --forceExit --detectOpenHandles",
-    "ghworkflowtest": "jest",
     "start": "node app.js",
     "dev": "nodemon runserver"
   },
