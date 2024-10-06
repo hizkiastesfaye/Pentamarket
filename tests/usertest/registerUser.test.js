@@ -77,7 +77,7 @@ describe('Test User', ()=>{
         .expect(200)
         expect(res.text).toEqual('This User feature.')
     })
-    it.skip('test post /user/register',async ()=>{
+    it('test post /user/register',async ()=>{
 
         const res = await request(app)
             .post('/user/register')
