@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "ghworkflowtest": "jest",
     "start": "node app.js",
     "dev": "nodemon runserver"
   },

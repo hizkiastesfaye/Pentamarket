@@ -84,12 +84,8 @@ describe('Test User', ()=>{
             .send(user1)
             .expect(201)
         expect(res.body.firstname).toEqual('mark')
-
-        console.log("in test: ",res.body.password)
         const ismatch = bcrypt.compareSync(user1.password,res.body.password)
-        console.log(ismatch)
         user.id = 3
-        console.log('res post /user/register:',res.body)
         expect(ismatch).toBe(true)
 
         const res1 = await request(app)

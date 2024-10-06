@@ -28,15 +28,12 @@ beforeEach(async()=>{
     const res10 = await request(app)
     .post('/user/register')
     .send(user10)
-    console.log(res10.body.firstname)
-
 
     const res = await request(app)
     .post('/user/login')
     .send(user1)
     .expect(200)
     token = res.body.token
-    console.log(token)
 })
 afterEach(async ()=>{
     await usermodel.deleteMany()
