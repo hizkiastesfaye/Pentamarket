@@ -77,7 +77,7 @@ describe('Test User', ()=>{
         .expect(200)
         expect(res.text).toEqual('This User feature.')
     })
-    it.skip('test post /user/register',async ()=>{
+    it('test post /user/register',async ()=>{
 
         const res = await request(app)
             .post('/user/register')
@@ -134,7 +134,7 @@ describe('Test the Errors',()=>{
 
         const res = await request(app)
         .post('/user/register')
-        .send(user1)
+        .send(usenpr1)
         expect(res.body).toEqual({error: "Email is already exists"})
 
         const res1 = await request(app)
