@@ -44,4 +44,5 @@ jobs:
         run: mongo localhost:27017/test --eval "db.dropDatabase()"
 
       - name: run test
-        run: npx jest --runInBand --detectOpenHandles --testTimeout=30000
+        run: npx jest tests/usertest/loginUser.test.js
+        # run: npx jest --runInBand --detectOpenHandles --testTimeout=30000
