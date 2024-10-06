@@ -34,7 +34,6 @@ exports.loginUser = async (req)=>{
     const err = validationResult(req)
     if (!err.isEmpty()){
         const errorMessages = err.array().map(error=>error.msg).join(', ');
-        console.log(errorMessages)
         throw new Error(errorMessages);
     }
     const user = await userModel.findOne({email:req.body.email})
@@ -47,7 +46,7 @@ exports.loginUser = async (req)=>{
     }
 
     const token = authMiddleware.jwtAuth(user.firstname)
-    
+
 
     return {firstname:user.firstname,token:token}
 

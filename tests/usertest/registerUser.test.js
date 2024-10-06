@@ -17,7 +17,7 @@ beforeAll(async ()=>{
     await connectDB()
 })
 afterEach(async ()=>{
-    // await usermodel.deleteMany()
+    await usermodel.deleteMany()
 })
 afterAll(async ()=>{
     // await mongoose.disconnect()
@@ -103,6 +103,7 @@ describe('Test User', ()=>{
 
 describe('Test the Errors',()=>{
 
+
     it('test /user/register express validation',async()=>{
 
         const res01 = await request(app)
@@ -120,6 +121,12 @@ describe('Test the Errors',()=>{
     })
 
     it('test post /user/register incorrect form',async ()=>{
+        // creating new user 
+        await request(app)
+        .post('/user/register')
+        .send(user1)
+        .expect(201)
+
 
         const res0 = await request(app)
         .post('/user/register')

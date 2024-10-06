@@ -1,6 +1,8 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const mongoose = require('mongoose')
+const usermodel = require('../../src/features/Users/userModel')
+
 
 const connectDB = require('../../src/config/dbConfig')
 
@@ -11,8 +13,24 @@ const user1 = {
     password:'1234567899',
 }
 
+const user10 = {
+    firstname:'mark',
+    lastname:'mattiw',
+    tel:'0987654',
+    email:'jmark@gmail.com',
+    password:'1234567899',
+}
+
 beforeAll(async ()=>{
     await connectDB()
+})
+beforeEach(async()=>{
+    const res10 = await request(app)
+    .post('/user/register')
+    .send(user10)
+    console.log(res10.body.firstname)
+
+
     const res = await request(app)
     .post('/user/login')
     .send(user1)
@@ -20,10 +38,14 @@ beforeAll(async ()=>{
     token = res.body.token
     console.log(token)
 })
+afterEach(async ()=>{
+    await usermodel.deleteMany()
+})
 
 
 afterAll(async ()=>{
-   await  mongoose.connection.close()
+
+    await  mongoose.connection.close()
 
 })
 
@@ -37,7 +59,6 @@ describe('test /user/login', ()=>{
         .post('/user/login')
         .send(user1)
         .expect(200)
-        console.log('--------------token----------',res.body.token)
         expect(res.body.firstname).toEqual(user1firstname)
     })
 
