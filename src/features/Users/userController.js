@@ -2,7 +2,6 @@ const userService = require('./userService')
 
 exports.registerUser= async(req,res)=>{
     try{
-        
         const newuser = await userService.registerUser(req)
         res.status(201).json(newuser)
     }

@@ -29,31 +29,43 @@ afterAll(async ()=>{
 const user = {
     firstname:'john',
     lastname:'biden',
+    country: "Germany",
     email:'john@gmail.com',
     password:'1234567899',
 }
 const user1 = {
     firstname:'mark',
     lastname:'mattiw',
+    country: "Germany",
     tel:'0987654',
     email:'jmark@gmail.com',
     password:'1234567899',
 }
 const user2 = {
     firstname:'john',
+    country: "Germany",
     email:'john@gmail.com',
     password:'1234567899',
 }
 const user3 = {
     firstname:'Derick',
     lastname:'mattiw',
+    country: "Germany",
     tel:'0987654',
     email:'derick@gmail.com',
+    password:'1234567899',
+}
+const user4 = {
+    firstname:'john',
+    lastname:'biden',
+    tel:'0987654',
+    email:'john@gmail.com',
     password:'1234567899',
 }
 const userincorrectemail = {
     firstname:'kandrik',
     lastname:'mattiw',
+    country: "Germany",
     tel:'0987654',
     email:'kandrikgmail.com',
     password:'1234567899',
@@ -127,13 +139,19 @@ describe('Test the Errors',()=>{
         const res0 = await request(app)
         .post('/user/register')
         .send(usernull)
-        expect(res0.body).toEqual({error:"first name is required, lastname is required, tel is required, Email is invalid, Password must be at least 8 character long."})
+        expect(res0.body).toEqual({error:"first name is required, lastname is required, country is required, tel is required, Email is invalid, Password must be at least 8 character long."})
 
         const res01 = await request(app)
         .post('/user/register')
         .send(userincorrectemail)
         .expect(400)
         expect(res01.body).toEqual({error:'Email is invalid'})
+
+        const res02 = await request(app)
+        .post('/user/register')
+        .send(user4)
+        .expect(400)
+        expect(res02.body).toEqual({error:'country is required'})
 
         const res = await request(app)
         .post('/user/register')

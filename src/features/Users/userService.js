@@ -6,6 +6,7 @@ const authMiddleware = require('../../middleware/authMiddleware')
 
 
 exports.registerUser = async (req)=>{
+    
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         const errorMessages = errors.array().map(error => error.msg).join(', ');
@@ -21,6 +22,7 @@ exports.registerUser = async (req)=>{
     const newuser = new userModel({
         firstname:user.firstname,
         lastname:user.lastname,
+        country: user.country,
         tel:user.tel,
         email:user.email,
         password:hashedpassword
@@ -45,7 +47,7 @@ exports.loginUser = async (req)=>{
         throw new Error('Incorrect password')
     }
 
-    const token = authMiddleware.jwtAuth(user.firstname)
+    const token = authMiddleware.jwtAuth(user.firstname,user.email)
 
 
     return {firstname:user.firstname,token:token}
