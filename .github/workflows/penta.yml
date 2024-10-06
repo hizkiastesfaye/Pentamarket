@@ -40,8 +40,8 @@ jobs:
         run: |
             echo "MONGO_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
             echo "SECRET_KEY=1234567890" >> $GITHUB_ENV
-      - name: Clear database
-        run: mongo localhost:27017/test --eval "db.dropDatabase()"
+      # - name: Clear database
+      #   run: mongosh localhost:27017/test --eval "db.dropDatabase()"
 
       - name: run test
         run: npx jest tests/usertest/loginUser.test.js
