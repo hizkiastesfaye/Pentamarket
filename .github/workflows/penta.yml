@@ -41,7 +41,4 @@ jobs:
             echo "MONGO_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
             echo "SECRET_KEY=1234567890" >> $GITHUB_ENV
       - name: run test
-      #   run: npx jest tests/usertest/loginUser.test.js
-      # - name: run test register
-      #   run: npx jest tests/usertest/registerUser.test.js
         run: npx jest --runInBand --detectOpenHandles --testTimeout=30000
