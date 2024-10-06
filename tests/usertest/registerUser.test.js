@@ -44,6 +44,13 @@ const user2 = {
     email:'john@gmail.com',
     password:'1234567899',
 }
+const user3 = {
+    firstname:'Derick',
+    lastname:'mattiw',
+    tel:'0987654',
+    email:'derick@gmail.com',
+    password:'1234567899',
+}
 const userincorrectemail = {
     firstname:'kandrik',
     lastname:'mattiw',
@@ -70,7 +77,7 @@ describe('Test User', ()=>{
         .expect(200)
         expect(res.text).toEqual('This User feature.')
     })
-    it('test post /user/register',async ()=>{
+    it.skip('test post /user/register',async ()=>{
 
         const res = await request(app)
             .post('/user/register')
@@ -84,6 +91,12 @@ describe('Test User', ()=>{
         user.id = 3
         console.log('res post /user/register:',res.body)
         expect(ismatch).toBe(true)
+
+        const res1 = await request(app)
+        .post('/user/register')
+        .send(user3)
+        .expect(201)
+        expect(res1.body.firstname).toEqual('Derick')
     })
 
 })

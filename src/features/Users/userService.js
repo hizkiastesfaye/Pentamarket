@@ -2,12 +2,8 @@
 const userModel = require('./userModel')
 const bcrypt = require('bcrypt')
 const { validationResult} = require('express-validator')
+const authMiddleware = require('../../middleware/authMiddleware')
 
-
-const Users = [
-    {id:1,name:'john',password:'1234567890'},
-    {id:2,name:'will',password:'0987654321'}
-]
 
 exports.registerUser = async (req)=>{
     const errors = validationResult(req)
@@ -29,7 +25,30 @@ exports.registerUser = async (req)=>{
         email:user.email,
         password:hashedpassword
     })
-
+    
     return await newuser.save()
 }
 
+
+exports.loginUser = async (req)=>{
+    const err = validationResult(req)
+    if (!err.isEmpty()){
+        const errorMessages = err.array().map(error=>error.msg).join(', ');
+        console.log(errorMessages)
+        throw new Error(errorMessages);
+    }
+    const user = await userModel.findOne({email:req.body.email})
+    if (!user){
+        throw new Error('Incorrect Email')
+    }
+    const ispassword = bcrypt.compareSync(req.body.password,user.password)
+    if (!ispassword){
+        throw new Error('Incorrect password')
+    }
+
+    const token = authMiddleware.jwtAuth(user.firstname)
+    
+
+    return {firstname:user.firstname,token:token}
+
+}

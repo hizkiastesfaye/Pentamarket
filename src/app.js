@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const morgan  = require('morgan')
 const user = require('./features/Users/userRoutes')
 const product = require('./features/Products/productRoutes')
 const order = require('./features/Orders/orderRoutes')
@@ -9,6 +10,7 @@ const supportTicket = require('./features/SupportTicket/supportRoutes')
 
 
 const app = express()
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 

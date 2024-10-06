@@ -10,5 +10,10 @@ const userRegisterValidate = ()=>{
 
     ]
 }
-
-module.exports ={ userRegisterValidate } 
+const userLoginvalidate = ()=>{
+    return [
+        body('email').isEmail().withMessage('Email is invalid'),
+        body('password').isLength({min:8}).withMessage('Password must be at least 8 character long.'),
+    ]
+}
+module.exports ={ userRegisterValidate, userLoginvalidate } 

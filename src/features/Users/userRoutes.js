@@ -1,14 +1,23 @@
 const express = require('express')
+require('dotenv').config()
 const router = express.Router()
 const controller = require('./userController')
-const { userRegisterValidate }= require('../../middleware/validMiddleware')
+const { userRegisterValidate, userLoginvalidate }= require('../../middleware/validMiddleware')
+const jwtt = require('jsonwebtoken')
+const authMiddleware = require('../../middleware/authMiddleware')
+
 
 router.get('/',(req,res)=>{
-    const rr = 'this user feature.'
+
     res.status(200).send('This User feature.')
 })
-router.post('/register',userRegisterValidate(),controller.registerUser)
+router.get('/protected',authMiddleware.jwtVerify,(req,res)=>{
+    res.json({msg:'This is protected url'})
 
+})
+
+router.post('/register',userRegisterValidate(),controller.registerUser)
+router.post('/login',userLoginvalidate(),controller.loginUser)
 
 
 
