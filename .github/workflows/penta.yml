@@ -39,4 +39,4 @@ jobs:
       - name: Environment
         run: echo "MONGO_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
       - name: run test
-        run: npx jest --runInBand --detectOpenHandles --testTimeout=30000 --maxWorkers=2
+        run: npx jest --runInBand --detectOpenHandles --testTimeout=30000
