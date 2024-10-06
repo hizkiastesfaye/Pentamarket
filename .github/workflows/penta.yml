@@ -45,4 +45,6 @@ jobs:
 
       - name: run test
         run: npx jest tests/usertest/loginUser.test.js
+      - name: run test register
+        run: npx jest tests/usertest/registerUser.test.js
         # run: npx jest --runInBand --detectOpenHandles --testTimeout=30000
