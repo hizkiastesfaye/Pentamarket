@@ -1,7 +1,7 @@
 
 const userModel = require('./userModel')
 const bcrypt = require('bcrypt')
-const { validationResult} = require('express-validator')
+const { param, validationResult} = require('express-validator')
 const authMiddleware = require('../../middleware/authMiddleware')
 
 
@@ -57,7 +57,6 @@ exports.loginUser = async (req)=>{
 exports.updateUser = async (req)=>{
     const param1 = req.params.field1
     const param2 = req.params.field2
-    console.log(param1,param2,req.body.firstname)
     const err = validationResult(req)
     if(!err.isEmpty()) {
         const errorMessages = err.array().map(error=>error.msg).join(', ')
@@ -67,24 +66,25 @@ exports.updateUser = async (req)=>{
     if (!user){
         throw new Error('user not found.')
     }
-    const paramsList = ['firstname','email','tel','password','role']
-    if(param1 && paramsList.includes(param1)){
-        
+
+    const paramsList = ['email','tel','role','firstname']
+    if(paramsList.includes(param1)){
         if(param2 == 'lastname'){
-            
             user.firstname=req.body.firstname
             user.lastname = req.body.lastname
-            console.log(param1,param2)
+            const token = authMiddleware.jwtAuth(user.firstname,user.email);
             await user.save()
-            const token = authMiddleware.jwtAuth(user.firstname,user.email)
-            console.log(token)
-            return token
+            return {msg:'succussfully updated', token}
         }
         else{
             user[param1] = req.body[param1]
+            if(param1 == 'email') {
+                const token = authMiddleware.jwtAuth(user.firstname,user.email);
+                await user.save()
+                return {msg:'succussfully updated', token}
+            }
+            
         }
-
     }
-
-    return(user)
+    return await user.save()
 }
