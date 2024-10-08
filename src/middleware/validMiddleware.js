@@ -13,12 +13,11 @@ const userRegisterValidate = ()=>{
 }
 
 const userUpdateValidate = ()=>{
-    const paramsList = ['firstname','email','tel','password','role','password','country']
+    const paramsList = ['firstname','email','tel','password','role','country','address']
     return [
         param('field1').custom((value,{req})=>{
             if (paramsList.includes(value)) {
                 if(value == 'firstname' && !req.params.field2){
-                    console.log(')00000000000',value,!req.params.field2)
                     throw new Error('field2 is required after firstname')
                 }
                 return true;
@@ -35,6 +34,7 @@ const userUpdateValidate = ()=>{
         body('tel').if((value,{req})=>req.params.field1 == 'tel').notEmpty().withMessage('tel is required'),
         body('email').if((value,{req})=>req.params.field1 == 'email').isEmail().withMessage('Email is invalid'),
         body('password').if((value,{req})=>req.params.field1 == 'password').isLength({min:8}).withMessage('Password must be at least 8 character long.'),
+        // body('address').if((value,{req})=>req.params.field1 == 'address').notEmpty().withMessage('a')
     ]
 }
 

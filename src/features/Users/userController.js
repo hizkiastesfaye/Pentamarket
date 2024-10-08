@@ -29,3 +29,25 @@ exports.updateUser = async (req,res)=>{
         res.status(400).json({error:err.message})
     }
 }
+
+exports.getUser = async (req,res)=>{
+    try{
+    const getuser = await userService.getUser(req)
+
+    res.status(200).json(getuser)
+    }
+    catch(err){
+        res.status(400).json({error:err.message})
+    }
+}
+
+
+exports.deleteUser = async (req,res)=>{
+    try{
+        const deleteuser = await userService.deleteUser(req)
+        res.status(204).json(deleteuser)
+    }
+    catch(err){
+        res.status(400).json({error:err.message})
+    }
+}

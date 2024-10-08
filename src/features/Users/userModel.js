@@ -75,8 +75,6 @@ userSchema.pre('save', function(next){
     next();
 })
 
-const User = mongoose.model('User', userSchema)
-
 
 
 const addressSchema = mongoose.Schema({
@@ -95,13 +93,29 @@ const addressSchema = mongoose.Schema({
         type:String,
         trim:true
     },
-    postcode:{
+    zipcode:{
         type:String,
         trim:true
     }
     
 })
 
+
+// userSchema.pre('deleteOne',{document:true, query:false},async function(next){
+//     const userId = this._id
+//     await Address.deleteMany({user_id:userId})
+//     next();
+// })
+
+userSchema.pre('findOneAndDelete', { document: true, query: false }, async function (next) {
+    const userId = this._id;  // Use this._id to get the user's ObjectId
+    const user = await this.model.findOne(this.getQuery())
+    await Address.deleteMany({ user_id: user._id });  // Delete all addresses associated with this user
+    next();
+});
+
+
+const User = mongoose.model('User', userSchema)
 const Address = mongoose.model('Address',addressSchema)
 
 

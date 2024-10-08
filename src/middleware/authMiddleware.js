@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken')
 const secretKe = '1234567890'
 const secretKey = process.env.SECRET_KEY
 
-exports.jwtAuth =(firstname,email)=>{
-    const payload = {firstname:firstname,email:email}
+exports.jwtAuth =(firstname,email,role)=>{
+    const payload = {firstname:firstname,email:email,role}
     const token = jwt.sign(payload,secretKey,{expiresIn:'1h'})
     return token
 }

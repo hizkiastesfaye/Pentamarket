@@ -18,7 +18,8 @@ router.get('/protected',authMiddleware.jwtVerify,(req,res)=>{
 
 router.post('/register',validMiddleware.userRegisterValidate(),controller.registerUser)
 router.post('/login',validMiddleware.userLoginvalidate(),controller.loginUser)
-router.post('/update/:field1/:field2?',authMiddleware.jwtVerify,validMiddleware.userUpdateValidate(),controller.updateUser)
-
+router.put('/update/:field1/:field2?',authMiddleware.jwtVerify,validMiddleware.userUpdateValidate(),controller.updateUser)
+router.get('/get',authMiddleware.jwtVerify,controller.getUser)
+router.delete('/delete/:email',authMiddleware.jwtVerify,controller.deleteUser)
 
 module.exports = router;
