@@ -18,6 +18,12 @@ exports.registerUser = async (req)=>{
     if (isuser) {
         throw new Error('Email is already exists')
     }
+    const roles = ['Buyer','Seller','admin']
+    
+    if(user.role && !roles.includes(user.role)) {
+        throw new Error('invalid roles')
+    }
+    if(!user.role) user.role = 'Buyer';
 
     const hashedpassword = await bcrypt.hashSync(user.password,10)
     const newuser = new userModel.User({
@@ -26,6 +32,7 @@ exports.registerUser = async (req)=>{
         country: user.country,
         tel:user.tel,
         email:user.email,
+        role:user.role,
         password:hashedpassword
     })
     
@@ -49,7 +56,6 @@ exports.loginUser = async (req)=>{
     }
 
     const token = authMiddleware.jwtAuth(user.firstname,user.email,user.role)
-
 
     return {firstname:user.firstname,token:token}
 }
@@ -96,6 +102,24 @@ exports.updateUser = async (req)=>{
             return await userAddress.save()
 
         }
+        else if(param1 == 'role'){
+            const roles = ['Buyer','Seller','admin']
+    
+            if(!roles.includes(user.role)) {
+                throw new Error('invalid role')
+            }
+            user.role = req.body.role
+            const token = authMiddleware.jwtAuth(user.firstname,user.email,user.role);
+            await user.save()
+            return {user, token}
+
+        }
+        else if(param1 == 'email') {
+            user[param1] = req.body[param1]
+            const token = authMiddleware.jwtAuth(user.firstname,user.email,user.role);
+            await user.save()
+            return {user, token}
+        }
         else{
             user[param1] = req.body[param1]
             if(param1 == 'email') {
@@ -111,6 +135,7 @@ exports.updateUser = async (req)=>{
 exports.getUser = async (req)=>{
     const userEmail = req.user.email
     const user = await userModel.User.findOne({email:userEmail})
+    console.log(req.user)
     return{
         firstname:user.firstname,
         lastname:user.lastname,
@@ -127,6 +152,6 @@ exports.deleteUser=async (req)=>{
     if (!deleteduser) {
         throw new Error('email not found')
     }
-    const address = await userModel.Address.findOneAndDelete({user_id:deleteduser._id})
+    await userModel.Address.findOneAndDelete({user_id:deleteduser._id})
     return({msg:'successfuly deleted'})
 }

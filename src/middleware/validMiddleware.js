@@ -33,6 +33,7 @@ const userUpdateValidate = ()=>{
         body('country').if((value,{req})=>req.params.field1 == 'country').notEmpty().withMessage('country is required'),
         body('tel').if((value,{req})=>req.params.field1 == 'tel').notEmpty().withMessage('tel is required'),
         body('email').if((value,{req})=>req.params.field1 == 'email').isEmail().withMessage('Email is invalid'),
+        body('role').if((value,{req})=> req.params.field1 == 'role').notEmpty().withMessage('role is required'),
         body('password').if((value,{req})=>req.params.field1 == 'password').isLength({min:8}).withMessage('Password must be at least 8 character long.'),
         // body('address').if((value,{req})=>req.params.field1 == 'address').notEmpty().withMessage('a')
     ]

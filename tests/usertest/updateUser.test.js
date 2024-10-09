@@ -40,8 +40,10 @@ const user3 = {
     lastname:'mike',
     country: "Germany",
     tel:'27432345',
+    role:'Seller',
     email:'john@gmail.com',
 }
+
 const user4 = {
     firstname:'john',
     lastname:'mike',
@@ -137,6 +139,15 @@ describe('test /user/update and /user/get',()=>{
         .set('Authorization', `Bearer ${token}`)
         .expect(201)
         token = res.body.token
+    })
+    it('test put /user/update role',async ()=>{
+        const res31 = await request(app)
+        .put('/user/update/role')
+        .send(user3)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(201)
+        token = res31.body.token
+        console.log(res31.body)
     })
     it('test put user/update password',async ()=>{
         const res = await request(app)
