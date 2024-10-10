@@ -12,6 +12,7 @@ const user01 = {
     country: "Germany",
     tel:'0987654',
     email:'jmark@gmail.com',
+    role:'admin',
     password:'1234567899',
 }
 const user02 = {
@@ -93,6 +94,17 @@ describe('test /product/catagory',()=>{
     })
 })
 
+const user11 = {
+    firstname:'mark',
+    lastname:'mattiw',
+    country: "Germany",
+    tel:'0987654',
+    email:'jmark@gmail.com',
+    role:'Buyer',
+    password:'1234567899',
+}
+
+
 
 const catag11 = {
     description:'phone with touch screen'
@@ -159,5 +171,53 @@ describe('test /product/catagory error',()=>{
         .expect(400)
         // console.log(res1.body)
         expect(res1.body).toEqual({error:'laptop is not found'})
+    })
+
+    it.only('test productCatagory admin privilage',async()=>{
+        await userModel.User.deleteMany()
+        await productModel.productCatagory.deleteMany()
+
+        const res = await request(app)
+        .post('/user/register')
+        .send(user11)
+        .expect(201)
+        // console.log(res.body)
+    
+        const res02 = await request(app)
+        .post('/user/login')
+        .send(user02)
+        .expect(200)
+        token = res02.body.token
+
+
+        const res03 = await request(app)
+        .post('/product/catagory/add')
+        .send(catag1)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        // console.log(res03.body)
+        expect(res03.body).toEqual({ error: 'permission denied: only admin have access to catagory' })
+
+        const res04 = await request(app)
+        .put('/product/catagory/update/smartPhone')
+        .send(catag2)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        // console.log(res04.body)
+        expect(res04.body).toEqual({ error: 'permission denied: only admin have access to catagory' })
+
+        const res05 = await request(app)
+        .delete('/product/catagory/delete/smartPhone')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        // console.log(res04.body)
+        expect(res05.body).toEqual({ error: 'permission denied: only admin have access to catagory' })
+
+        const res06 = await request(app)
+        .get('/product/catagory/get/smartPhone')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        // console.log(res06.body)
+        expect(res06.body).toEqual({ error: "permission denied: only admin and seller to get catagory"})
     })
 })

@@ -14,6 +14,7 @@ router.put('/catagory/update/:name',authMiddleware.jwtVerify,validMiddleware.pro
 router.delete('/catagory/delete/:name',authMiddleware.jwtVerify,productController.deleteCatagory)
 
 router.post('/add',authMiddleware.jwtVerify,validMiddleware.productValidate(),productController.addProduct)
+router.get('/get/:sku',authMiddleware.jwtVerify,productController.getProduct)
 router.put('/update/:sku',authMiddleware.jwtVerify,validMiddleware.productValidate(),productController.updateProduct)
 router.delete('/delete/:sku',authMiddleware.jwtVerify,productController.deleteProduct)
 

@@ -12,6 +12,7 @@ const user01 = {
     country: "Germany",
     tel:'0987654',
     email:'jmark@gmail.com',
+    role:'Seller',
     password:'1234567899',
 }
 const user02 = {
@@ -24,12 +25,15 @@ const prod1 = {
     description:'black medium size phone',
     sku:'sm-s9-8',
     stockLevel:90,
+    catagory:'smartPhone'
 }
 const prod2 = {
     name:'samsung',
     description:'samsung s9 latest version black',
     sku:'sm-s9-16',
     stockLevel:78,
+    catagory:'smartPhone'
+
 }
 const catag1 = {
     name:'smartPhone',
@@ -42,7 +46,7 @@ beforeAll(async ()=>{
     .post('/user/register')
     .send(user01)
     .expect(201)
-    // console.log(res.body)
+    console.log(res.body)
 
     const res02 = await request(app)
     .post('/user/login')
@@ -86,13 +90,22 @@ describe('test /product',()=>{
         // expect(res.body).toEqual(prod1)
 
     })
+    it('test put /product/get',async()=>{
+        const res = await request(app)
+        .get('/product/get/sm-s9-8')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+        // console.log(res.body)
+
+    })
+
     it('test put /product/update',async()=>{
         const res = await request(app)
         .put('/product/update/sm-s9-8')
         .set('Authorization', `Bearer ${token}`)
         .send(prod2)
-        // .expect(201)
-        console.log(res.body)
+        .expect(201)
+        // console.log(res.body)
 
     })
     it('test delete /product/delete',async()=>{
@@ -104,45 +117,59 @@ describe('test /product',()=>{
 
     })
 })
-const catag11 = {
-    description:'phone with touch screen'
-}
-const catag12 = {
-    name:'smartPhone',
-}
 
+const user03 = {
+    firstname:'mark',
+    lastname:'mattiw',
+    country: "Germany",
+    tel:'0987654',
+    email:'jmark@gmail.com',
+    password:'1234567899',
+}
 
 const prod21 = {
     description:'black medium size phone',
     sku:'sm-s9-8',
     stockLevel:90,
+    catagory:'smartPhone'
+
 }
 const prod22 = {
     name:'samsung',
     sku:'sm-s9-8',
     stockLevel:90,
+    catagory:'smartPhone'
+
 }
 const prod23 = {
     name:'samsung',
     description:'black medium size phone',
     stockLevel:90,
+    catagory:'smartPhone'
+
 }
 const prod24 = {
     name:'samsung',
     description:'black medium size phone',
     sku:'sm-s9-8',
+    catagory:'smartPhone'
+
 }
 const prod25 = {
     name:'samsung',
     description:'black medium size phone',
     sku:'sm-s9-8',
     stockLevel:'high',
+    catagory:'smartPhone'
+
 }
 const prod26 = {
     name:'samsung',
     description:'black medium size phone',
     sku:'sm-s9-32',
     stockLevel:90,
+    catagory:'smartPhone'
+
 }
 describe('test /product error',()=>{
     it('test post /product/add name is required',async ()=>{
@@ -203,7 +230,37 @@ describe('test /product error',()=>{
         .expect(404)
         expect(res.body).toEqual({error:'Page not found.'})
     })
+    it("test /product buyer can't alter product",async()=>{
+        await userModel.User.deleteMany()
+        await productModel.product.deleteMany()
+        await productModel.productCatagory.deleteMany()
 
+        await request(app)
+        .post('/user/register')
+        .send(user03)
+        .expect(201)
+    
+        const res02 = await request(app)
+        .post('/user/login')
+        .send(user02)
+        .expect(200)
+        token = res02.body.token
+    
+        await request(app)
+        .post('/product/catagory/add')
+        .set('Authorization', `Bearer ${token}`)
+        .send(catag1)
+        .expect(201)
+
+        const res4 = await request(app)
+        .post('/product/add')
+        .set('Authorization', `Bearer ${token}`)
+        .send(prod1)
+        .expect(400)
+        // console.log(res4.body)
+        expect(res4.body).toEqual({error:"permission denied: Buyer can't add product"})
+
+    })
 
     
 })
