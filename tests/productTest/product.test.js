@@ -12,7 +12,7 @@ const user01 = {
     country: "Germany",
     tel:'0987654',
     email:'jmark@gmail.com',
-    role:'Seller',
+    role:'admin',
     password:'1234567899',
 }
 const user02 = {
@@ -46,7 +46,7 @@ beforeAll(async ()=>{
     .post('/user/register')
     .send(user01)
     .expect(201)
-    console.log(res.body)
+    // console.log(res.body)
 
     const res02 = await request(app)
     .post('/user/login')
@@ -59,7 +59,7 @@ beforeAll(async ()=>{
     .set('Authorization', `Bearer ${token}`)
     .send(catag1)
     .expect(201)
-    // console.log(res3.body)
+    console.log(res3.body)
     
 
 })
@@ -233,7 +233,6 @@ describe('test /product error',()=>{
     it("test /product buyer can't alter product",async()=>{
         await userModel.User.deleteMany()
         await productModel.product.deleteMany()
-        await productModel.productCatagory.deleteMany()
 
         await request(app)
         .post('/user/register')
@@ -245,12 +244,6 @@ describe('test /product error',()=>{
         .send(user02)
         .expect(200)
         token = res02.body.token
-    
-        await request(app)
-        .post('/product/catagory/add')
-        .set('Authorization', `Bearer ${token}`)
-        .send(catag1)
-        .expect(201)
 
         const res4 = await request(app)
         .post('/product/add')
