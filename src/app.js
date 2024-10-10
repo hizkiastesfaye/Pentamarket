@@ -27,7 +27,7 @@ app.use('/inventory',inventory)
 app.use('/support',supportTicket)
 
 app.use((req,res)=>{
-    res.status(404).send('Page not found.')
+    res.status(404).json({error:'Page not found.'})
 })
 
 module.exports = app

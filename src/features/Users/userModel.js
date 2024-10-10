@@ -62,11 +62,11 @@ const userSchema = new mongoose.Schema({
         enum:['Buyer','Seller'],
         default:'Buyer'
     },
-    created_at:{
+    createdAt:{
         type:Date,
         default:Date.now
     },
-    updated_at:{
+    updatedAt:{
         type:Date,
     }
 })

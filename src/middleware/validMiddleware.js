@@ -45,4 +45,27 @@ const userLoginvalidate = ()=>{
         body('password').isLength({min:8}).withMessage('Password must be at least 8 character long.'),
     ]
 }
-module.exports ={ userRegisterValidate, userUpdateValidate, userLoginvalidate } 
+
+const productCatagoryValidate = ()=>{
+    return [
+        body('name').notEmpty().withMessage('name is required'),
+        body('description').notEmpty().withMessage('description is required')
+    ]
+}
+
+const productValidate = ()=>{
+    return[
+        body('name').notEmpty().withMessage('name is required'),
+        body('sku').notEmpty().withMessage('sku is required'),
+        body('description').notEmpty().withMessage('description is required'),
+        body('stockLevel')
+            .notEmpty().withMessage('stockLevel is required')
+            .isNumeric().withMessage('stockLevel must be number')
+    ]
+}
+module.exports ={ 
+    userRegisterValidate, userUpdateValidate, userLoginvalidate,
+    productCatagoryValidate, productValidate
+} 
+
+

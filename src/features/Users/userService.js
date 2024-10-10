@@ -1,12 +1,11 @@
 
 const userModel = require('./userModel')
 const bcrypt = require('bcrypt')
-const { param, validationResult} = require('express-validator')
+const { validationResult} = require('express-validator')
 const authMiddleware = require('../../middleware/authMiddleware')
 
 
 exports.registerUser = async (req)=>{
-    
     
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

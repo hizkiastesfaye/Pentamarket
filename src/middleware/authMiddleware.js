@@ -14,7 +14,7 @@ exports.jwtVerify=(req,res,next)=>{
     if (!headauth) return res.status(400).json({msg:'invalid token'});
     const token = headauth.split(' ')[1]
     jwt.verify(token,process.env.SECRET_KEY,(err,user)=>{
-        if (err) return res.status(400).json({message:'Invalid token'});
+        if (err) return res.status(401).json({message:'Invalid token'});
         req.user = user
         next()
     })
