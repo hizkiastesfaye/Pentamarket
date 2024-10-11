@@ -15,12 +15,6 @@ const productSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    // price:{
-    //     type:Number,
-    //     set:value=>parseFloat(value,toFixed(2)),
-    //     get:value=>parseFloat(value,toFixed(2)),
-    //     required:true,
-    // },
     sku:{
         type:String,
         required:true,

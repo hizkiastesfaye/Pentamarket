@@ -58,14 +58,62 @@ const productValidate = ()=>{
         body('name').notEmpty().withMessage('name is required'),
         body('sku').notEmpty().withMessage('sku is required'),
         body('description').notEmpty().withMessage('description is required'),
+        body('catagory').notEmpty().withMessage('catagory name is required'),
         body('stockLevel')
             .notEmpty().withMessage('stockLevel is required')
             .isNumeric().withMessage('stockLevel must be number')
     ]
 }
+const addInventoryValidate = ()=>{
+    return[
+        body('productSku').notEmpty().withMessage('productSku is required'),
+        body('invSku').notEmpty().withMessage('invSku is required'),
+        body('invStockLevel')
+            .notEmpty().withMessage('invStockLevel is required,')
+            .isNumeric().withMessage('invStockLevel must be number'),
+        body('price')
+            .notEmpty().withMessage('price is required,')
+            .isNumeric().withMessage('price must be number'),
+
+        body('location').notEmpty().withMessage('location is required'),
+    ]
+}
+const getAndDeleteInventoryValidate = ()=>{
+    return[
+        param('productSku').custom((value,{req})=>{
+            if (!value) throw new Error('Invalid productSku');
+        }),
+        param('invSku').custom((value,{req})=>{
+            if(!value) throw new Error('Invalid invSku')
+        })
+    ]
+}
+const updateInventoryValidate = ()=>{
+    return[
+        param('productSku').custom((value,{req})=>{
+            if (!value) throw new Error('Invalid productSku');
+        }),
+        param('invSku').custom((value,{req})=>{
+            if(!value) throw new Error('Invalid invSku')
+        }),
+        body('productSku').notEmpty().withMessage('product sku is required'),
+        body('invSku').notEmpty().withMessage('inventory sku is required'),
+        body('invStockLevel')
+            .notEmpty().withMessage('inventory stockLevel is required')
+            .isNumeric().withMessage('inventory stockLevel must be number'),
+        body('price')
+            .notEmpty().withMessage('price is required')
+            .isNumeric().withMessage('price must be number'),
+
+        body('location').notEmpty().withMessage('location is required'),
+    ]
+}
+
+
 module.exports ={ 
     userRegisterValidate, userUpdateValidate, userLoginvalidate,
-    productCatagoryValidate, productValidate
+    productCatagoryValidate, productValidate,
+    addInventoryValidate,getAndDeleteInventoryValidate,updateInventoryValidate,
 } 
 
 
