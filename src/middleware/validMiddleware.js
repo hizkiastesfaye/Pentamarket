@@ -78,16 +78,7 @@ const addInventoryValidate = ()=>{
         body('location').notEmpty().withMessage('location is required'),
     ]
 }
-const getAndDeleteInventoryValidate = ()=>{
-    return[
-        param('productSku').custom((value,{req})=>{
-            if (!value) throw new Error('Invalid productSku');
-        }),
-        param('invSku').custom((value,{req})=>{
-            if(!value) throw new Error('Invalid invSku')
-        })
-    ]
-}
+
 const updateInventoryValidate = ()=>{
     return[
         param('productSku').custom((value,{req})=>{
@@ -113,7 +104,7 @@ const updateInventoryValidate = ()=>{
 module.exports ={ 
     userRegisterValidate, userUpdateValidate, userLoginvalidate,
     productCatagoryValidate, productValidate,
-    addInventoryValidate,getAndDeleteInventoryValidate,updateInventoryValidate,
+    addInventoryValidate,updateInventoryValidate,
 } 
 
 

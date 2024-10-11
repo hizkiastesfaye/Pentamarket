@@ -14,7 +14,7 @@ exports.addInventory = async (req)=>{
     const user = await userModel.User.findOne({email:req.user.email})
     const role = ['Seller','admin']
     if(!role.includes(user.role)){
-        throw new Error("permission denied: admin and seller have access to inventory")
+        throw new Error("permission denied: only admin and seller have access to inventory")
     }
     const product = await productModel.product.findOne({
         sku:req.body.productSku,
@@ -44,8 +44,12 @@ exports.addInventory = async (req)=>{
 
 
 exports.getInventory = async (req)=>{
+
     const param1 = req.params.productSku
     const param2 = req.params.invSku
+    if(!param1 || !param2){
+        throw new Error('Invalid params')
+    }
     const user = await userModel.User.findOne({email:req.user.email})
     
     const role = ['Seller','admin']
@@ -58,7 +62,7 @@ exports.getInventory = async (req)=>{
         sellerId:user._id
     })
     if(!product){
-        throw new Error('Product not found')
+        throw new Error('product not found')
     }
     const inventory= await inventoryModel.Inventory.findOne({
         invSku:param2,
@@ -74,4 +78,32 @@ exports.getInventory = async (req)=>{
         price:inventory.price,
         location:inventory.location
     }
+}
+
+exports.deleteInventory = async (req)=>{
+    const param1 = req.params.productSku
+    const param2 = req.params.invSku
+    const user = await userModel.User.findOne({email:req.user.email})
+    
+    const role = ['Seller','admin']
+    if(!role.includes(user.role)){
+        console.log(!role.includes(user.role))
+        throw new Error("permission denied: only admin and seller have access to inventory")
+    }
+    const product = await productModel.product.findOne({
+        sku:param1,
+        sellerId:user._id
+    })
+    if(!product){
+        throw new Error('product not found')
+    }
+    const inventory= await inventoryModel.Inventory.findOneAndDelete({
+        invSku:param2,
+        productId:product._id
+    })
+    console.log(inventory)
+    if(!inventory){
+        throw new Error(`inventory not found`)
+    }
+    return {msg:'successfully deleted'}
 }

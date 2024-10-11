@@ -94,7 +94,7 @@ describe('test /inventory',()=>{
         .post('/inventory/add')
         .send(inv1)
         .set('Authorization',`Bearer ${token}`)
-        // .expect(201)
+        .expect(201)
         console.log(res.body)
     })
     it('test get /inventory',async()=>{
@@ -103,6 +103,14 @@ describe('test /inventory',()=>{
         .set('Authorization',`Bearer ${token}`)
         .expect(200)
         console.log(res.body)
+    })
+    it('test delete /inventory',async()=>{
+        const res = await request(app)
+        .delete('/inventory/delete/sm-s9-8/sm-s9-8-bl-lg')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(200)
+        console.log(res.body)
+        expect(res.body).toEqual({msg:'successfully deleted'})
     })
 })
 
@@ -156,7 +164,25 @@ const inv17 ={
     price:48.98,
  
 }
-describe('test /inventory error',()=>{
+
+const inv18 ={
+    productSku: 'sm-s9-17',
+    invSku: 'sm-s9-8-bl-lg',
+    invStockLevel:89,
+    price:48.98,
+    location:'newyork'
+}
+
+describe('test post /inventory/add error',()=>{
+
+    it('test post /inventory',async()=>{
+        const res = await request(app)
+        .post('/inventory/add')
+        .send(inv1)
+        .set('Authorization',`Bearer ${token}`)
+        .expect(201)
+    })
+
     it('test /post /inventory inventory exists error',async()=>{
         const res = await request(app)
         .post('/inventory/add')
@@ -222,12 +248,65 @@ describe('test /inventory error',()=>{
         .expect(400)
         expect(res.body).toEqual({error:'location is required'})
     })
-    // it('test /post /inventory  error',async()=>{
-    //     const res = await request(app)
-    //     .post('/inventory/add')
-    //     .send(inv18)
-    //     .set('Authorization',`Bearer ${token}`)
-    //     .expect(400)
-    //     expect(res.body).toEqual({error:''})
-    // })
+    it('test /post /inventory/add product not found error',async()=>{
+        const res = await request(app)
+        .post('/inventory/add')
+        .send(inv18)
+        .set('Authorization',`Bearer ${token}`)
+        .expect(400)
+        expect(res.body).toEqual({error:'product not found'})
+    })
+})
+
+describe('test get and delete /inventory error',()=>{
+    it('test get /inventory param1 productSku error',async()=>{
+        const res = await request(app)
+        .get('/inventory/get/')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(404)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'Page not found.'})
+    })
+    it('test get /inventory param1 productSku error',async()=>{
+        const res = await request(app)
+        .get('/inventory/get/sm-s9-8/')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(404)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'Page not found.'})
+    })
+    it('test get /inventory inventoy not found error',async()=>{
+        const res = await request(app)
+        .get('/inventory/get/sm-s9-8/sm-s9-8-bll-lg')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(400)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'inventory not found'})
+    })   
+    it('test get /inventory product not found error',async()=>{
+        const res = await request(app)
+        .get('/inventory/get/sm-s9-10/sm-s9-8-bl-lg')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(400)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'product not found'})
+    })
+
+    it('test delete /inventory inventoy not found error',async()=>{
+        const res = await request(app)
+        .delete('/inventory/delete/sm-s9-8/sm-s9-8-bll-lg')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(400)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'inventory not found'})
+    })
+    it('test delete /inventory product not found error',async()=>{
+        const res = await request(app)
+        .delete('/inventory/delete/sm-s9-10/sm-s9-8-bl-lg')
+        .set('Authorization',`Bearer ${token}`)
+        .expect(400)
+        console.log(res.body)
+        expect(res.body).toEqual({error:'product not found'})
+    })
+    
 })

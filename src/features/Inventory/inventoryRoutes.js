@@ -8,6 +8,7 @@ router.get('/',(req,res)=>{
     res.status(200).send('This Inventory feature.')
 })
 router.post('/add',authMiddleware.jwtVerify,validMiddleware.addInventoryValidate(),inventoryController.addInventory)
-router.get('/get/:productSku/:invSku',authMiddleware.jwtVerify,validMiddleware.getAndDeleteInventoryValidate(),inventoryController.getInventory)
+router.get('/get/:productSku/:invSku',authMiddleware.jwtVerify,inventoryController.getInventory)
+router.delete('/delete/:productSku/:invSku',authMiddleware.jwtVerify,inventoryController.deleteInventory)
 
 module.exports = router;

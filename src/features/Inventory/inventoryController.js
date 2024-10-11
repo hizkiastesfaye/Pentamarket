@@ -20,3 +20,14 @@ exports.getInventory = async (req,res)=>{
         res.status(400).json({error:err.message})
     }
 }
+
+
+exports.deleteInventory = async (req,res)=>{
+    try{
+        const inventory = await inventoryService.deleteInventory(req)
+        res.status(200).json(inventory)
+    }
+    catch(err){
+        res.status(400).json({error:err.message})
+    }
+}
