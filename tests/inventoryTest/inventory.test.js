@@ -71,6 +71,7 @@ afterAll(async ()=>{
     await productModel.product.deleteMany()
     await productModel.productCatagory.deleteMany()
     await inventoryModel.Inventory.deleteMany()
+    await inventoryModel.SellerProduct.deleteMany()
     await mongoose.connection.close()
 })
 
@@ -81,6 +82,13 @@ const inv1 ={
     price:48.98,
     location:'newyork'
 }
+const inv2 ={
+    productSku: 'sm-s9-8',
+    invSku: 'sm-s9-8-bl-lg',
+    invStockLevel:700,
+    price:408.98,
+    location:'florida'
+}
 
 describe('test /inventory',()=>{
     test('test first test',async ()=>{
@@ -89,29 +97,41 @@ describe('test /inventory',()=>{
         .expect(200)
         expect(res.text).toEqual('Welcome to Pentamarket!')
     })
-    it('test post /inventory',async()=>{
+    it.only('test post /inventory',async()=>{
         const res = await request(app)
         .post('/inventory/add')
         .send(inv1)
         .set('Authorization',`Bearer ${token}`)
         .expect(201)
         console.log(res.body)
+
     })
-    it('test get /inventory',async()=>{
+    it.only('test get /inventory',async()=>{
         const res = await request(app)
         .get('/inventory/get/sm-s9-8/sm-s9-8-bl-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(200)
         console.log(res.body)
+
+        const sellerProduct = await inventoryModel.SellerProduct.findById(res.body.sellerProductId)
+        console.log(sellerProduct)
+    })
+    it('test put /inventory/update',async()=>{
+    const res = await request(app)
+    .put('/inventory/update/sm-s9-8/sm-s9-8-bl-lg')
+    .set('Authorization',`Bearer ${token}`)
+    .send(inv2)
+    .expect(200)
+    console.log(res.body)
     })
     it('test delete /inventory',async()=>{
         const res = await request(app)
         .delete('/inventory/delete/sm-s9-8/sm-s9-8-bl-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(200)
-        console.log(res.body)
         expect(res.body).toEqual({msg:'successfully deleted'})
     })
+
 })
 
 
@@ -264,7 +284,6 @@ describe('test get and delete /inventory error',()=>{
         .get('/inventory/get/')
         .set('Authorization',`Bearer ${token}`)
         .expect(404)
-        console.log(res.body)
         expect(res.body).toEqual({error:'Page not found.'})
     })
     it('test get /inventory param1 productSku error',async()=>{
@@ -272,7 +291,6 @@ describe('test get and delete /inventory error',()=>{
         .get('/inventory/get/sm-s9-8/')
         .set('Authorization',`Bearer ${token}`)
         .expect(404)
-        console.log(res.body)
         expect(res.body).toEqual({error:'Page not found.'})
     })
     it('test get /inventory inventoy not found error',async()=>{
@@ -280,7 +298,6 @@ describe('test get and delete /inventory error',()=>{
         .get('/inventory/get/sm-s9-8/sm-s9-8-bll-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(400)
-        console.log(res.body)
         expect(res.body).toEqual({error:'inventory not found'})
     })   
     it('test get /inventory product not found error',async()=>{
@@ -288,7 +305,6 @@ describe('test get and delete /inventory error',()=>{
         .get('/inventory/get/sm-s9-10/sm-s9-8-bl-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(400)
-        console.log(res.body)
         expect(res.body).toEqual({error:'product not found'})
     })
 
@@ -297,7 +313,6 @@ describe('test get and delete /inventory error',()=>{
         .delete('/inventory/delete/sm-s9-8/sm-s9-8-bll-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(400)
-        console.log(res.body)
         expect(res.body).toEqual({error:'inventory not found'})
     })
     it('test delete /inventory product not found error',async()=>{
@@ -305,7 +320,6 @@ describe('test get and delete /inventory error',()=>{
         .delete('/inventory/delete/sm-s9-10/sm-s9-8-bl-lg')
         .set('Authorization',`Bearer ${token}`)
         .expect(400)
-        console.log(res.body)
         expect(res.body).toEqual({error:'product not found'})
     })
     

@@ -82,10 +82,10 @@ const addInventoryValidate = ()=>{
 const updateInventoryValidate = ()=>{
     return[
         param('productSku').custom((value,{req})=>{
-            if (!value) throw new Error('Invalid productSku');
+            if (value) return true;
         }),
         param('invSku').custom((value,{req})=>{
-            if(!value) throw new Error('Invalid invSku')
+            if(value) return true;
         }),
         body('productSku').notEmpty().withMessage('product sku is required'),
         body('invSku').notEmpty().withMessage('inventory sku is required'),
@@ -101,10 +101,26 @@ const updateInventoryValidate = ()=>{
 }
 
 
+const cartValidate = ()=>{
+    return [
+        body('sellerProductId').notEmpty().withMessage('sellerProductId is required'),
+        body('quantity').isNumeric().withMessage('quantity must be number'),
+
+    ]
+}
+const orderValidate = ()=>{
+    return [
+        body('sellerProductId').notEmpty().withMessage('sellerProductId is required'),
+        body('quantity').isNumeric().withMessage('quantity must be number'),
+
+    ]
+}
+
 module.exports ={ 
     userRegisterValidate, userUpdateValidate, userLoginvalidate,
     productCatagoryValidate, productValidate,
     addInventoryValidate,updateInventoryValidate,
+    cartValidate,orderValidate,
 } 
 
 

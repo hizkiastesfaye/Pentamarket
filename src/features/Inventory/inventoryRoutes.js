@@ -9,6 +9,10 @@ router.get('/',(req,res)=>{
 })
 router.post('/add',authMiddleware.jwtVerify,validMiddleware.addInventoryValidate(),inventoryController.addInventory)
 router.get('/get/:productSku/:invSku',authMiddleware.jwtVerify,inventoryController.getInventory)
+router.put('/update/:productSku/:invSku',authMiddleware.jwtVerify,validMiddleware.updateInventoryValidate(),inventoryController.updateInventory)
 router.delete('/delete/:productSku/:invSku',authMiddleware.jwtVerify,inventoryController.deleteInventory)
+
+
+
 
 module.exports = router;
