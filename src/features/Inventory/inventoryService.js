@@ -4,8 +4,11 @@ const productModel = require('../Products/productModel')
 const {validationResult} = require('express-validator')
 const mongoose = require('mongoose')
 
-exports.addInventory = async (req)=>{
+const path = require('path');
+const fs = require('fs');
 
+exports.addInventory = async (req)=>{
+    console.log("image isssssssssssssss:",req.file, req.user)
     const err = validationResult(req)
     if (!err.isEmpty()){
         const errorMessages = err.array().map(error=>error.msg).join(' ')
@@ -34,12 +37,21 @@ exports.addInventory = async (req)=>{
     if(inventory){
         throw new Error('The inventory already exists')
     }
+    let imagename = ''
+    if(req.file){
+        imagename= req.file.filename
+        console.log('iiiiiiiiiimmmmmge path: ',imagename)
+    }
+
+
     const newinventory = new inventoryModel.Inventory({
         productId: product._id,
         invSku:req.body.invSku,
         invStockLevel:req.body.invStockLevel,
         price:req.body.price,
-        location:req.body.location
+        location:req.body.location,
+        image:imagename,
+        
     })
     await newinventory.save()
     const newSellerProduct = new inventoryModel.SellerProduct({
@@ -90,7 +102,8 @@ exports.getInventory = async (req)=>{
         insvsku:inventory.invsku,
         invStockLevel:inventory.invStockLevel,
         price:inventory.price,
-        sellerProductId:sellerProduct.id
+        sellerProductId:sellerProduct.id,
+        image:inventory.image,
     }
 }
 

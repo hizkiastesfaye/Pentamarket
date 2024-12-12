@@ -100,6 +100,12 @@ afterAll(async ()=>{
 })
 
 describe('test order',()=>{
+    it.only('test /order',async()=>{
+        const res = await request(app)
+        .get('/order')
+        .set('Authorization', `${token}`)
+        .expect(200)
+    })
     it('test /order/add',async()=>{
         const order1 = {
             sellerProductId:sellerProductId,

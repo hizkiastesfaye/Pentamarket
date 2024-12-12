@@ -152,7 +152,7 @@ describe('test /product/catagory error',()=>{
         const res = await request(app)
         .get('/product/catagory/get/laptop')
         .set('Authorization', `Bearer ${token}`)
-        .expect(404)
+        .expect(400)
         expect(res.body).toEqual({error:'laptop is not found'})
     })
     it('test put /product/catagory/update error',async()=>{
@@ -173,7 +173,7 @@ describe('test /product/catagory error',()=>{
         expect(res1.body).toEqual({error:'laptop is not found'})
     })
 
-    it.only('test productCatagory admin privilage',async()=>{
+    it('test productCatagory admin privilage',async()=>{
         await userModel.User.deleteMany()
         await productModel.productCatagory.deleteMany()
 

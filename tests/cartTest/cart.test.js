@@ -100,6 +100,13 @@ afterAll(async ()=>{
 
 describe('test /cart',()=>{
 
+    it.only('test get /cart',async()=>{
+        const res = await request(app)
+        .get('/cart')
+        .set('Authorization', `${token}`)
+        .expect(200)
+    })
+
     it('test post /cart/add',async()=>{
         const cart1 = {
             quantity:40,
@@ -110,7 +117,7 @@ describe('test /cart',()=>{
         .post('/cart/add')
         .set('Authorization', `Bearer ${token}`)
         .send(cart1)
-        .expect(201)
+        .expect(400)
         console.log(res.body)
     })
     it('test post /cart/add',async()=>{

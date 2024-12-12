@@ -8,10 +8,10 @@ router.get('/',(req,res)=>{
     res.status(200).send('This Cart feature.')
 })
 
-router.post('/add',authMiddleware.jwtVerify,validMiddleware.cartValidate(),cartController.addCart)
-router.get('/get/',authMiddleware.jwtVerify,cartController.getCart)
+// router.post('/add',authMiddleware.jwtVerify,validMiddleware.cartValidate(),cartController.addCart)
+// router.get('/get/',authMiddleware.jwtVerify,cartController.getCart)
 // router.put('/update/:productSku/:invSku',authMiddleware.jwtVerify,validMiddleware.cartValidate(),cartController.updateCart)
-router.delete('/delete/:sellerProductId',authMiddleware.jwtVerify,cartController.deleteCart)
+// router.delete('/delete/:sellerProductId',authMiddleware.jwtVerify,cartController.deleteCart)
 
 
 

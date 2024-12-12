@@ -97,7 +97,7 @@ describe('test /inventory',()=>{
         .expect(200)
         expect(res.text).toEqual('Welcome to Pentamarket!')
     })
-    it.only('test post /inventory',async()=>{
+    it('test post /inventory',async()=>{
         const res = await request(app)
         .post('/inventory/add')
         .send(inv1)
@@ -106,7 +106,7 @@ describe('test /inventory',()=>{
         console.log(res.body)
 
     })
-    it.only('test get /inventory',async()=>{
+    it('test get /inventory',async()=>{
         const res = await request(app)
         .get('/inventory/get/sm-s9-8/sm-s9-8-bl-lg')
         .set('Authorization',`Bearer ${token}`)

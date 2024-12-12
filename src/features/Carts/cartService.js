@@ -5,7 +5,7 @@ const Cart = require('./cartModel')
 const {validationResult} = require('express-validator')
 
 exports.addCart = async (req)=>{
-
+    
     const err = validationResult(req)
     if (!err.isEmpty()){
         const errorMessages = err.array().map(error=>error.msg).join(' ')
@@ -38,6 +38,7 @@ exports.addCart = async (req)=>{
     })
     console.log(cart)
 
+
     if(cart){
         cart.quantity = req.body.quantity || cart.quantity
         cart.status = req.body.status || cart.status
@@ -50,7 +51,7 @@ exports.addCart = async (req)=>{
         quantity: req.body.quantity,
         price: inventory.price,
     })
-    // console.log(newCart)
+    console.log(newCart)
     return(await newCart.save())
 }
 

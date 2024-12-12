@@ -56,7 +56,7 @@ exports.loginUser = async (req)=>{
 
     const token = authMiddleware.jwtAuth(user.firstname,user.email,user.role)
 
-    return {firstname:user.firstname,token:token}
+    return {firstname:user.firstname,token:token,role:user.role}
 }
 
 exports.updateUser = async (req)=>{

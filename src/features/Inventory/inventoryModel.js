@@ -4,6 +4,7 @@ const inventorySchema = mongoose.Schema({
 
     productId:{ type:mongoose.Schema.Types.ObjectId, ref:'Product', required:true},
     invSku:{type:String,required:true,trim:true,unique:true},
+    image: {type:String,trim:true},
     invStockLevel:{ type:Number,required:true},
     price:{type:Number, required:true },
     location:{type:String,},
