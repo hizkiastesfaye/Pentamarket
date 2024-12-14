@@ -2,6 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const morgan  = require('morgan')
 const cors = require('cors')
+const path = require('path')
+// const 
 const user = require('./features/Users/userRoutes')
 const product = require('./features/Products/productRoutes')
 const order = require('./features/Orders/orderRoutes')
@@ -15,6 +17,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
+app.use(express.static(path.join(__dirname,'../uploads')))
 
 
 

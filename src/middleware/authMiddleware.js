@@ -5,7 +5,7 @@ const secretKey = process.env.SECRET_KEY
 
 exports.jwtAuth =(firstname,email,role)=>{
     const payload = {firstname:firstname,email:email,role:role}
-    const token = jwt.sign(payload,secretKey,{expiresIn:'1h'})
+    const token = jwt.sign(payload,secretKey,{expiresIn:'1d'})
     return token
 }
 
