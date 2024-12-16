@@ -31,7 +31,8 @@ const upload = multer({ storage:storage });
 router.get('/',(req,res)=>{
     const imgpath = path.join(__dirname,'../../../uploads/inventory')
     console.log('iiiiiiiimgpath: ', imgpath)
-    res.status(200).send('This Inventory feature.')
+    res.status(200).send(imgpath)
+    // res.status(200).send('This Inventory feature.')
 })
 router.post('/add',authMiddleware.jwtVerify,upload.single('image'),validMiddleware.addInventoryValidate(),inventoryController.addInventory)
 router.get('/get/:productSku/:invSku',authMiddleware.jwtVerify,inventoryController.getInventory)
